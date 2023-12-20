@@ -2,11 +2,16 @@ from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
 from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate
+from fastapi.staticfiles import StaticFiles
 from langchain.chains import LLMChain
 from dotenv import load_dotenv
 load_dotenv()
 
 app = FastAPI()
+
+# Mount the "static" folder to "/static" URL
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 templates = Jinja2Templates(directory="templates")
 
 # Initialize the OpenAI API
@@ -15,7 +20,8 @@ llm = OpenAI(temperature=0.9)
 # Define the prompt template
 prompt = PromptTemplate(
     input_variables=["question", "code"],
-    template="Check if the following code is correct. If it is incorrect, provide a detailed explanation of why it is incorrect and how it can be corrected. Do not return 'Correct'. Question: {question} Code: {code}",
+    template="Check if the following code is correct. If it is incorrect, provide a detailed explanation of why it is "
+             "incorrect and how it can be corrected. Do not return 'Correct'. Question: {question} Code: {code}",
 )
 
 # Create a chain
