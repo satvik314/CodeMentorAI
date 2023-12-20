@@ -1,44 +1,34 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from starlette.responses import FileResponse 
+from fastapi import FastAPI, Request
+from fastapi.templating import Jinja2Templates
 from langchain.llms import OpenAI
-
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
 from dotenv import load_dotenv
 load_dotenv()
 
 app = FastAPI()
+templates = Jinja2Templates(directory="templates")
 
-origins = ["*"]
+# Initialize the OpenAI API
+llm = OpenAI(temperature=0.9)
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+# Define the prompt template
+prompt = PromptTemplate(
+    input_variables=["question", "code"],
+    template="Check if the following code is correct. If it is incorrect, provide a detailed explanation of why it is incorrect and how it can be corrected. Do not return 'Correct'. Question: {question} Code: {code}",
 )
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
-
-
-class Item(BaseModel):
-    question: str
-    code: str
-
+# Create a chain
+chain = LLMChain(llm=llm, prompt=prompt)
 
 @app.get("/")
-async def read_index():
-    return FileResponse('static/index.html')
+def form_post(request: Request):
+    return templates.TemplateResponse('form.html', context={'request': request})
 
-@app.post("/check_code/")
-async def check_code(item: Item):
-    llm = OpenAI(temperature=0.9)
-    text = item.question + "\n" + item.code
-    response = llm(text)
-    return {"response": response}
-
-
-# if __name__ == "__main__":
-#     uvicorn.run(app, host="0.0.0.0", port=8000)
+@app.post("/")
+async def form_post(request: Request):
+    form_data = await request.form()
+    question = form_data.get('question')
+    code = form_data.get('code')
+    output = chain.run(question=question, code=code)
+    return templates.TemplateResponse('form.html', context={'request': request, 'output': output})

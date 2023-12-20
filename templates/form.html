@@ -1,0 +1,84 @@
+<!-- <!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.css">
+</head>
+<body>
+
+<h2>Code Checker</h2>
+
+<form action="/" method="post">
+  <label for="question">Question:</label><br>
+  <input type="text" id="question" name="question"><br>
+  <label for="code">Code:</label><br>
+  <textarea id="code" name="code"></textarea><br>
+  
+  <input type="submit" value="Submit">
+</form> 
+
+{% if output %}
+<h2>Output:</h2>
+<p>{{ output }}</p>
+{% endif %}
+
+</body>
+</html>
+
+
+<script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+      lineNumbers: true,
+      mode: "python",
+      theme: "monokai"
+    });
+  </script>
+
+<script>
+    var code = editor.getValue();
+    // Send the code to your server for processing
+  </script> -->
+
+  <!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.css">
+</head>
+<body>
+
+<h2>Code Checker</h2>
+
+<div id="form-and-output">
+  <form action="/" method="post">
+    <label for="question">Question:</label><br>
+    <input type="text" id="question" name="question"><br>
+    <label for="code">Code:</label><br>
+    <textarea id="code" name="code"></textarea><br>
+    
+    <input type="submit" value="Submit">
+  </form> 
+
+  {% if output %}
+  <h2>Output:</h2>
+  <p>{{ output }}</p>
+  {% endif %}
+</div>
+
+<script>
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+      lineNumbers: true,
+      mode: "python",
+      theme: "monokai"
+    });
+  </script>
+
+<script>
+    var code = editor.getValue();
+    // Send the code to your server for processing
+  </script>
+
+</body>
+</html>
