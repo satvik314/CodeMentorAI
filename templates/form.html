@@ -40,34 +40,42 @@
     // Send the code to your server for processing
   </script> -->
 
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
-<head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.css">
-</head>
-<body>
+  <head>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.js"></script>
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.css">
 
-<h2>Code Checker</h2>
+  </head>
+  <body>
 
-<div id="form-and-output">
-  <form action="/" method="post">
-    <label for="question">Question:</label><br>
-    <input type="text" id="question" name="question"><br>
-    <label for="code">Code:</label><br>
-    <textarea id="code" name="code"></textarea><br>
-    
-    <input type="submit" value="Submit">
-  </form> 
+    <h2>Code Checker</h2>
 
-  {% if output %}
-  <h2>Output:</h2>
-  <p>{{ output }}</p>
-  {% endif %}
-</div>
+    <div id="form-and-output">
+      <form action="/" method="post">
+        <label for="topic"> Topics: </label>
+        <select id="topic" name="title"></select><br>
+        <label for="question">Question:</label>
+        <select id="questions" name="question">
+          <option value="NA">---NA---</option>
+        </select> <br>
+        <!-- <input type="text" id="question" name="question"><br> -->
+        <label for="code">Code:</label><br>
+        <textarea id="code" name="code"></textarea><br>
 
-<script>
+        <input type="submit" value="Submit">
+      </form>
+
+      {% if output %}
+      <h2>Output:</h2>
+      <p>{{ output }}</p>
+      {% endif %}
+    </div>
+
+    <script>
     var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
       lineNumbers: true,
       mode: "python",
@@ -75,10 +83,55 @@
     });
   </script>
 
-<script>
+    <script>
     var code = editor.getValue();
     // Send the code to your server for processing
   </script>
 
-</body>
+    <!--inserting script of reading json file-->
+    <script async>
+    var data;
+
+    async function response3(){
+        let response = await fetch('/static/problems.json');
+        let info = await response.json()
+        console.log(info)
+        data=info;
+        options(info)
+    }
+
+    response3();
+
+    const topics=document.getElementById('topic');
+    const question=document.getElementById('questions')
+
+    function options(obj){
+        obj.forEach((item) => {
+            let option = document.createElement("option");
+            option.value = item.concept;
+            option.text=item.title;
+            topics.appendChild(option);
+        });
+    }
+
+    topics.addEventListener('change', function() {
+        // Clear the second select box
+        question.innerHTML = "";
+
+        // Find the selected topic in the data
+        let selectedTopic = data.find(item => item.concept == this.value);
+
+        // Create new option elements from the selected topic's questions for the second select box
+        selectedTopic.questions.forEach((que) => {
+            // console.log(que);
+            let option = document.createElement("option");
+            option.setAttribute('id',`${que.number}`)
+            option.text = que.text;
+            question.appendChild(option);
+            // question.add(option);
+        });
+    });
+
+    </script>
+  </body>
 </html>
