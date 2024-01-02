@@ -71,7 +71,10 @@
 
       {% if output %}
       <h2>Output:</h2>
-      <p>{{ output }}</p>
+      <h3>Correctness</h3>
+      <p>{{ output.correctness }}</p>
+      <h3>Explanation</h3>
+      <p>{{ output.explanation }}</p>
       {% endif %}
     </div>
 
