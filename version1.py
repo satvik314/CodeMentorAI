@@ -15,20 +15,9 @@ from starlette.middleware.sessions import SessionMiddleware
 from dotenv import load_dotenv
 load_dotenv()
 
-# import secrets
-
-# # Generate a secret key
-# secret_key = secrets.token_hex(32)
-
-# # Set the secret key as an environment variable
-# os.environ['SECRET_KEY'] = secret_key
-
-# # Get the secret key from the environment
-# secret_key = os.getenv('SECRET_KEY')
 
 app = FastAPI()
 
-# app.add_middleware(SessionMiddleware, secret_key=secret_key)
 
 # Mount the "static" folder to "/static" URL
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -43,21 +32,9 @@ codellama_model = ChatOpenAI(model = 'codellama/CodeLlama-34b-Instruct-hf',
 
 gpt3_model = ChatOpenAI(model = "gpt-3.5-turbo-1106")
 
-# # Define the prompt template
-# prompt = PromptTemplate(
-#     input_variables=["question", "code"],
-#     template="Check if the following code is correct. If it is incorrect, provide a detailed explanation of why it is "
-#              "incorrect and how it can be corrected. DO NOT PROVIDE CORRECT SOLUTION, LET THE STUDENT FIGURE OUT ANSWER. Question: {question} Code: {code}",
-# )
-
-
-
-# Create a chain
-# chain = LLMChain(llm=llm, prompt=prompt)
 
 @app.get("/")
 def form_post(request: Request):
-    # request.session.pop('output', None)
     return templates.TemplateResponse('form.html', context={'request': request})
 
 @app.post("/")
@@ -65,8 +42,8 @@ async def form_post(request: Request):
     form_data = await request.form()
     question = form_data.get('question')
     code = form_data.get('code')
-    codecheck = CodeCheck(question = question, code = code, llm = gpt3_model)
+    codecheck, usage = CodeCheck(question = question, code = code, llm = gpt3_model)
     runtime = runcode(code)
     # Store the output in the session
     # request.session['output'] = codecheck
-    return templates.TemplateResponse('form.html', context={'request': request, 'output': codecheck, 'runtime' : runtime})
+    return templates.TemplateResponse('form.html', context={'request': request, 'output': codecheck, 'runtime' : runtime, 'usage' : usage})

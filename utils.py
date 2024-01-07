@@ -1,8 +1,10 @@
 from typing import List, Dict
 from langchain.chat_models import ChatOpenAI
 from langchain.output_parsers import PydanticOutputParser, OutputFixingParser
+from langchain.callbacks import get_openai_callback
 from pydantic import BaseModel, Field
 from models import CodeCheckResponse
+
 
 
 def CodeCheck(question, code, llm):
@@ -24,15 +26,16 @@ def CodeCheck(question, code, llm):
     Efficiency: {{If the code is incorrect mention "None". If the code is correct, give suggestions on how the code can be optimised. Also, suggest some alternate ways of implementation.}}
     
     """
-    # Ask the LLM to score the resume and provide feedback
-    response = llm.predict(prompt)
+    with get_openai_callback() as cb:
+        response = llm.predict(prompt)
+        print(f"Usage: {cb}")
 
     parser = OutputFixingParser.from_llm(parser=PydanticOutputParser(pydantic_object=CodeCheckResponse), llm=llm)
     format_instructions = parser.get_format_instructions()
 
     codecheck = parser.parse(response)
 
-    return codecheck
+    return codecheck, cb
 
 
 def runcode(code):
