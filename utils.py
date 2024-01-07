@@ -20,7 +20,8 @@ def CodeCheck(question, code, llm):
     Please provide the scores and feedback to the candidate in the following format:
 
     Correctness: {{Correct or Incorrect}}
-    Explanation: {{Detailed explanation of why the code is incorrect and how it can be improved}}
+    Explanation: {{Detailed explanation of why the code is incorrect and how it can be improved.}}
+    Efficiency: {{If the code is incorrect mention "None". If the code is correct, give suggestions on how the code can be optimised. Also, suggest some alternate ways of implementation.}}
     
     """
     # Ask the LLM to score the resume and provide feedback
@@ -32,3 +33,30 @@ def CodeCheck(question, code, llm):
     codecheck = parser.parse(response)
 
     return codecheck
+
+
+def runcode(code):
+    try:
+        exec(code)
+    except Exception as e:
+        print(f"Error occurred: {e}")
+        return f"Error occurred: {e}"
+
+
+#### 
+# example for run code
+code = """
+def larger(a,b):
+    if a>b:
+        return a
+    elif b>a:
+        return b
+    else:
+        return None
+
+print(larger(3,4))
+
+"""
+
+runcode(code)
+###### 

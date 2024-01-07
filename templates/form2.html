@@ -89,7 +89,8 @@
             <input type="submit" value="Submit">
         </form> -->
 
-        <form action="/" method="post">
+        <!-- <form action="/" method="post"> -->
+        <form action="/" method="post" onsubmit="event.preventDefault(); handleFormSubmit(event);">
           <label for="topic">Topics:</label>
           <select id="topic" name="title">
               <option value="" selected>Select Topic</option>
@@ -103,36 +104,6 @@
           <input type="submit" value="Submit">
         </form>
     </div>
-    <!-- <div id="output">
-        {% if output %}
-        <h2>Evaluation</h2>
-        <h3>Correctness</h3>
-        <p>{{ output.correctness }}</p>
-        <h3>Explanation</h3>
-        <p>{{ output.explanation }}</p>
-        <h3>Efficiency</h3>
-        <p>{{ output.efficiency }}</p>
-        <h3>Test Cases (coming soon)</h3>
-        <p>Test 1 failed</p>
-        <p>Test 2 failed</p>
-        <p>Test 3 failed</p>
-        <p>Test 4 failed</p>
-        <p>Test 5 failed</p>
-        <h3>Similar Questions (coming soon)</h3>
-        <p>Questions</p>
-        
-        {% endif %}
-    </div>
-
-    <div id = "runtime">
-        <h2>Runtime Errors</h2>
-        {% if runtime %}
-        <p>{{ runtime }}</p>
-        {% else %}
-        <p>No runtime errors</p>
-        {% endif %}
-    </div> -->
-
     <div id="output">
         {% if output %}
         <h2>Evaluation</h2>
@@ -140,28 +111,6 @@
         <p>{{ output.correctness }}</p>
         <h3>Explanation</h3>
         <p>{{ output.explanation }}</p>
-        <h3>Efficiency</h3>
-        <p>{{ output.efficiency }}</p>
-       
-    
-        <div id="runtime">
-            <h3>Runtime Errors</h3>
-            {% if runtime %}
-            <p>{{ runtime }}</p>
-            {% else %}
-            <p>No runtime errors</p>
-            {% endif %}
-        </div>
-
-        <h3>Test Cases (coming soon)</h3>
-        <p>Test 1 failed</p>
-        <p>Test 2 failed</p>
-        <p>Test 3 failed</p>
-        <p>Test 4 failed</p>
-        <p>Test 5 failed</p>
-        <h3>Similar Questions (coming soon)</h3>
-        <p>Questions</p>
-    
         {% endif %}
     </div>
 </body>
