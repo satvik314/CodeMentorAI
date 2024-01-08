@@ -31,7 +31,7 @@ def CodeCheck(question, code, llm):
         print(f"Usage: {cb}")
 
     parser = OutputFixingParser.from_llm(parser=PydanticOutputParser(pydantic_object=CodeCheckResponse), llm=llm)
-    format_instructions = parser.get_format_instructions()
+    # format_instructions = parser.get_format_instructions()
 
     codecheck = parser.parse(response)
 
