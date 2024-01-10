@@ -77,65 +77,33 @@
     <h1>CodeMentorAI</h1>
     <h2>Your Personal AI Coding Mentor</h2>
     <div id="form-and-output">
-      <form action="/" method="post">
-        <label for="topics"> Topics: </label>
-        <select id="topics" name="topics">
-          <option value="NA">---NA---</option>
-          {% for option in topic %}
-            <option value="{{ option }}" {% if option == topic %}selected{% endif %}>{{ option }}</option>
-          {% endfor %}
-        </select><br />
-        <label for="question">Question:</label>
-        <select id="questions" name="question">
-          <option value="NA">---NA---</option>
-          {% for option in question %}
-            <option value="{{ option }}" {% if option == question %}selected{% endif %}>{{ option }}</option>
-          {% endfor %}
-        </select>
-        <br />
+        <!-- <form action="/" method="post">
+            <label for="topic">Topics:</label>
+            <select id="topic" name="title"></select>
+            <label for="question">Question:</label>
+            <select id="questions" name="question">
+                <option value="NA">---NA---</option>
+            </select>
+            <label for="code">Code:</label>
+            <textarea id="code" name="code"></textarea>
+            <input type="submit" value="Submit">
+        </form> -->
 
-        <label for="code">Code:</label><br />
-        <textarea id="code" name="code">{{ code }}</textarea><br />
-
-        <input type="submit" value="Submit" />
-
-      </form>
-
-      {% if output %}
-      <h2>Output:</h2>
-      <p>{{ output }}</p>
-      {% endif %}
+        <!-- <form action="/" method="post"> -->
+        <form action="/" method="post" onsubmit="event.preventDefault(); handleFormSubmit(event);">
+          <label for="topic">Topics:</label>
+          <select id="topic" name="title">
+              <option value="" selected>Select Topic</option>
+          </select>
+          <label for="question">Question:</label>
+          <select id="questions" name="question">
+              <option value="" >Select Question</option>
+          </select>
+          <label for="code">Code:</label>
+          <textarea id="code" name="code"></textarea>
+          <input type="submit" value="Submit">
+        </form>
     </div>
-    <!-- <div id="output">
-        {% if output %}
-        <h2>Evaluation</h2>
-        <h3>Correctness</h3>
-        <p>{{ output.correctness }}</p>
-        <h3>Explanation</h3>
-        <p>{{ output.explanation }}</p>
-        <h3>Efficiency</h3>
-        <p>{{ output.efficiency }}</p>
-        <h3>Test Cases (coming soon)</h3>
-        <p>Test 1 failed</p>
-        <p>Test 2 failed</p>
-        <p>Test 3 failed</p>
-        <p>Test 4 failed</p>
-        <p>Test 5 failed</p>
-        <h3>Similar Questions (coming soon)</h3>
-        <p>Questions</p>
-        
-        {% endif %}
-    </div>
-
-    <div id = "runtime">
-        <h2>Runtime Errors</h2>
-        {% if runtime %}
-        <p>{{ runtime }}</p>
-        {% else %}
-        <p>No runtime errors</p>
-        {% endif %}
-    </div> -->
-
     <div id="output">
         {% if output %}
         <h2>Evaluation</h2>
@@ -143,40 +111,7 @@
         <p>{{ output.correctness }}</p>
         <h3>Explanation</h3>
         <p>{{ output.explanation }}</p>
-        <h3>Efficiency</h3>
-        <p>{{ output.efficiency }}</p>
-       
-    
-        <div id="runtime">
-            <h3>Runtime Errors</h3>
-            {% if runtime %}
-            <p>{{ runtime }}</p>
-            {% else %}
-            <p>No runtime errors</p>
-            {% endif %}
-        </div>
-
-        <h3>Test Cases (coming soon)</h3>
-        <p>Test 1 failed</p>
-        <p>Test 2 failed</p>
-        <p>Test 3 failed</p>
-        <p>Test 4 failed</p>
-        <p>Test 5 failed</p>
-        <h3>Similar Questions (coming soon)</h3>
-        <p>Questions</p>
-    
         {% endif %}
-
-
-        <div id="Usage Stats" style="color: #FF0000;">
-            {% if usage %}
-            <h3 style="color: #FF0000;">Usage Stats</h3>
-            <p style="color: #FF0000;">Total Tokens: {{ usage.total_tokens }}</p>
-            <p style="color: #FF0000;">Prompt Tokens: {{ usage.prompt_tokens }}</p>
-            <p style="color: #FF0000;">Completion Tokens: {{ usage.completion_tokens }}</p>
-            <p style="color: #FF0000;">Total Cost (USD): {{ usage.total_cost }}</p>
-            {% endif %}
-        </div>
     </div>
 </body>
 
@@ -211,7 +146,7 @@
 
     response3();
 
-    const topics=document.getElementById('topics');
+    const topics=document.getElementById('topic');
     const question=document.getElementById('questions')
 
     function options(obj){
@@ -225,7 +160,7 @@
 
     topics.addEventListener('change', function() {
         // Clear the second select box
-<!--        question.innerHTML = "";-->
+        question.innerHTML = "";
 
         // Find the selected topic in the data
         let selectedTopic = data.find(item => item.concept == this.value);

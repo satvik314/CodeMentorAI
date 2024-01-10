@@ -44,7 +44,7 @@ class Code_Eval(BaseModel):
 prompt = PromptTemplate(
     input_variables=["question", "code"],
     template="Check if the following code is correct. If it is incorrect, provide a detailed explanation of why it is "
-             "incorrect and how it can be corrected. Do not return 'Correct'. Question: {question} Code: {code}",
+             "incorrect and how it can be corrected. DO NOT PROVIDE CORRECT SOLUTION, LET THE STUDENT FIGURE OUT ANSWER. Question: {question} Code: {code}",
 )
 
 # Create a chain
