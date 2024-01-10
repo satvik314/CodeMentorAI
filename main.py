@@ -91,5 +91,5 @@ async def form_post(request: Request):
     return templates.TemplateResponse('results.html',
                                       context={'request': request, "topic": topic_name, "code": code,
                                                "question": question,
-                                               'correct': str(output.correct), "explanation": output.explanation, "suggestion": output.suggestion})
-
+                                               'correct': str(output.correct), "explanation": output.explanation,
+                                               "suggestion": output.suggestion})
