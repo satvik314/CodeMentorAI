@@ -6,13 +6,12 @@ from pydantic import BaseModel, Field
 from models import CodeCheckResponse
 
 
-
 def CodeCheck(question, code, llm):
     # Define the prompt
     prompt = f"""
-    Check if the following code is correct. If it is, return 'Correct'. If it is not, return 'Incorrect'. 
-    If it is incorrect, provide a detailed explanation of why it is incorrect and how it can be corrected. 
-    NEVER OUTPUT THE CORRECT CODE. 
+    Check if the following code is correct. For correct code, return 'Correct'. For incorrect code, return 'Incorrect'. 
+    For the INCORRECT code provide a detailed explanation of why it is incorrect and how it can be corrected. 
+    DO NOT PROVIDE ANY DIRECT HINTS OR DIRECT SOLUTION IN THE EXPLANATION. 
     Question: 
     {question} 
 
@@ -62,4 +61,4 @@ print(larger(3,4))
 """
 
 runcode(code)
-###### 
+######

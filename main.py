@@ -36,15 +36,17 @@ class Code_Eval(BaseModel):
     """Identifying information about a person."""
 
     correct: bool = Field(..., description="Whether the code is correct or not")
-    explanation: str = Field(..., description="Explanation about the correctness or incorrectness of the code.")
-    suggestion: str = Field(..., description="Additional suggestion on the code.")
+    explanation: str = Field(..., description="Explanation about the correctness or incorrectness of the code without any suggestion.")
+    suggestion: str = Field(..., description="Only hints for correcting the code without any direct solution.")
 
 
 # Define the prompt template
 prompt = PromptTemplate(
     input_variables=["question", "code"],
     template="Check if the following code is correct. If it is incorrect, provide a detailed explanation of why it is "
-             "incorrect and how it can be corrected. DO NOT PROVIDE CORRECT SOLUTION, LET THE STUDENT FIGURE OUT ANSWER. Question: {question} Code: {code}",
+             "incorrect and provide hints of how it can be corrected."
+             "DO NOT PROVIDE ANY DIRECT SOLUTION IN ANY FORM."
+             "ANSWER. Question: {question} Code: {code}",
 )
 
 # Create a chain
@@ -59,8 +61,11 @@ prompt = ChatPromptTemplate.from_messages(
         ),
         (
             "human",
-            "Check if the following code is correct. If it is incorrect, provide a detailed explanation of why it is "
-            "incorrect and how it can be corrected. Do not return 'Correct'. Question: {question} Code: {code}",
+            "Check if the following code is correct. For incorrect code provide an explanation of why it is "
+            "incorrect. Do not return 'Correct'. "
+            "Next, provide suggestion of how it can be corrected WITHOUT ANY DIRECT HINTS OR DIRECT SOLUTION."
+            "Question: {question} Code: {code}"
+            "Return the output in the following format \n Correct: \n Explanation: \n Suggestion: ",
         ),
         ("human", "Tip: Make sure to answer in the correct format"),
     ]
