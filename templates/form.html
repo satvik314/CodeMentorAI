@@ -77,31 +77,34 @@
     <h1>CodeMentorAI</h1>
     <h2>Your Personal AI Coding Mentor</h2>
     <div id="form-and-output">
-        <!-- <form action="/" method="post">
-            <label for="topic">Topics:</label>
-            <select id="topic" name="title"></select>
-            <label for="question">Question:</label>
-            <select id="questions" name="question">
-                <option value="NA">---NA---</option>
-            </select>
-            <label for="code">Code:</label>
-            <textarea id="code" name="code"></textarea>
-            <input type="submit" value="Submit">
-        </form> -->
+      <form action="/" method="post">
+        <label for="topics"> Topics: </label>
+        <select id="topics" name="topics">
+          <option value="NA">---NA---</option>
+          {% for option in topic %}
+            <option value="{{ option }}" {% if option == topic %}selected{% endif %}>{{ option }}</option>
+          {% endfor %}
+        </select><br />
+        <label for="question">Question:</label>
+        <select id="questions" name="question">
+          <option value="NA">---NA---</option>
+          {% for option in question %}
+            <option value="{{ option }}" {% if option == question %}selected{% endif %}>{{ option }}</option>
+          {% endfor %}
+        </select>
+        <br />
 
-        <form action="/" method="post">
-          <label for="topic">Topics:</label>
-          <select id="topic" name="title">
-              <option value="" selected>Select Topic</option>
-          </select>
-          <label for="question">Question:</label>
-          <select id="questions" name="question">
-              <option value="" >Select Question</option>
-          </select>
-          <label for="code">Code:</label>
-          <textarea id="code" name="code"></textarea>
-          <input type="submit" value="Submit">
-        </form>
+        <label for="code">Code:</label><br />
+        <textarea id="code" name="code">{{ code }}</textarea><br />
+
+        <input type="submit" value="Submit" />
+
+      </form>
+
+      {% if output %}
+      <h2>Output:</h2>
+      <p>{{ output }}</p>
+      {% endif %}
     </div>
     <!-- <div id="output">
         {% if output %}
@@ -208,7 +211,7 @@
 
     response3();
 
-    const topics=document.getElementById('topic');
+    const topics=document.getElementById('topics');
     const question=document.getElementById('questions')
 
     function options(obj){
@@ -222,7 +225,7 @@
 
     topics.addEventListener('change', function() {
         // Clear the second select box
-        question.innerHTML = "";
+<!--        question.innerHTML = "";-->
 
         // Find the selected topic in the data
         let selectedTopic = data.find(item => item.concept == this.value);
