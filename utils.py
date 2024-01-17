@@ -24,6 +24,7 @@ def CodeCheck(question, code, llm):
     Explanation: {{Detailed explanation of why the code is incorrect and how it can be improved.}}
     Efficiency: {{If the code is incorrect mention "None". If the code is correct, give suggestions on how the code can be optimised. Also, suggest some alternate ways of implementation.}}
     
+    PLEASE RESPOND ONLY IN FORMAT AS MENTIONED ABOVE.
     """
     with get_openai_callback() as cb:
         response = llm.predict(prompt)
